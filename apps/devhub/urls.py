@@ -22,6 +22,10 @@ submit_patterns = patterns('',
     url('^bump$', views.submit_bump, name='devhub.submit.bump'),
 )
 
+submit_app_patterns = patterns('',
+    url('^3$', views.submit_describe, name='devhub.submit_app.3'),
+)
+
 marketplace_patterns = patterns('',
     url('^1$', views.marketplace_paypal, name='devhub.market.1'),
     url('^2$', views.marketplace_pricing, name='devhub.market.2'),
@@ -153,6 +157,7 @@ urlpatterns = decorate(write, patterns('',
     url('^apps/submit/1$', use_apps(views.submit), name='devhub.submit_apps.1'),
     url('^apps/submit/2$', use_apps(views.submit_addon),
         name='devhub.submit_apps.2'),
+    url('^apps/submit/', include(submit_app_patterns)),
 
     # Standalone validator:
     url('^addon/validate/?$', views.validate_addon,
