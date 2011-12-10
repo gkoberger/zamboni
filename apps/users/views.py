@@ -108,22 +108,38 @@ def confirm_resend(request, user_id):
     return http.HttpResponseRedirect(reverse('users.login'))
 
 
+@write
+@login_required
+@permission_required('Admin', 'EditAnyUser')
+def admin_delete(request, user_id):
+    amouser = get_object_or_404(UserProfile, pk=user_id)
+    return _delete(request, amouser, is_admin=True)
+
+
 @login_required
 def delete(request):
     amouser = request.amo_user
+    return _delete(request, amouser)
+
+
+def _delete(request, amouser, is_admin=False):
     if request.method == 'POST':
-        form = forms.UserDeleteForm(request.POST, request=request)
+        form = forms.UserDeleteForm(request.POST, request=request, amouser=amouser)
         if form.is_valid():
             messages.success(request, _('Profile Deleted'))
+
             amouser.anonymize()
-            logout(request)
-            form = None
-            return http.HttpResponseRedirect(reverse('users.login'))
+            if is_admin:
+                return http.HttpResponseRedirect(reverse('users.login'))
+            else:
+                logout(request)
+                form = None
+                return http.HttpResponseRedirect(reverse('zadmin.index'))
     else:
         form = forms.UserDeleteForm()
 
     return jingo.render(request, 'users/delete.html',
-                        {'form': form, 'amouser': amouser})
+            {'form': form, 'amouser': amouser, 'is_admin': is_admin})
 
 
 @login_required

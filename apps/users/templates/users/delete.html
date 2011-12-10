@@ -37,9 +37,19 @@
         <form method="post" action="" class="prettyform object-lead user-input">
           {{ csrf() }}
           <fieldset>
-            <legend>{{ _('Confirm account deletion') }}</legend>
+            {% if is_admin %}
+              {# Admin stuff isn't localized #}
+              <legend>Confirm deletion of <strong>{{ amouser.email }}</strong></legend>
+            {% else %}
+              <legend>{{ _('Confirm account deletion') }}</legend>
+            {% endif %}
             <ul>
-                <label for="id_password">{{ _('Password') }} {{ required() }}</label>
+                {% if is_admin %}
+                  <label for="id_password">Admin Password {{ required() }}</label>
+                {% else %}
+                  <label for="id_password">{{ _('Password') }} {{ required() }}</label>
+                {% endif %}
+
                 {{ form.password }}
                 {{ form.password.errors }}
               </li>
@@ -54,7 +64,13 @@
             </ul>
           </fieldset>
           <div class="fm-control">
-            <button type="submit">{{ _('Delete my user account now') }}</button>
+            <button type="submit">
+              {% if is_admin %}
+                Delete <strong>{{ amouser.email }}</strong>
+              {% else %}
+                {{ _('Delete my user account now') }}
+              {% endif %}
+            </button>
           </div>
         </form>
       {% endif %}

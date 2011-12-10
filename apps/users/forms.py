@@ -135,16 +135,22 @@ class UserDeleteForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
+        self.amouser = kwargs.pop('amouser', None)
         super(UserDeleteForm, self).__init__(*args, **kwargs)
 
     def clean_password(self):
         data = self.cleaned_data
-        amouser = self.request.user.get_profile()
-        if not amouser.check_password(data["password"]):
+
+        # This is the logged in user, which may be an admin
+        deleter_account = self.request.user.get_profile()
+        if not deleter_account.check_password(data["password"]):
             raise forms.ValidationError(_("Wrong password entered!"))
 
     def clean(self):
-        amouser = self.request.user.get_profile()
+        amouser = self.amouser
+        if not amouser:
+            amouser = self.request.user.get_profile()
+
         if amouser.is_developer:
             # This is tampering because the form isn't shown on the page if the
             # user is a developer
