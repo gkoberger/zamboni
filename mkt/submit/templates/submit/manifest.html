@@ -1,0 +1,292 @@
+{% extends 'hub/base.html' %}
+
+{% block title %}Submit an App | Mozilla Marketplace{% endblock %}
+
+{% block content %}
+  <ol id="submission-progress" class="c">
+    <li class="active">Developer Account</li>
+    <li class="active">App Details</li>
+    <li class="active">Manifest</li>
+    <li>Payments</li>
+    <li>Finished!</li>
+  </ol>
+  <section id="content" class="primary">
+    <div id="manifest">
+      <h1>Prepare Your App</h1>
+
+
+      <style>
+        #manifest table#steps {
+          width: 100%;
+        }
+        #manifest table#steps em {
+          font-style: italic;
+        }
+        #manifest table#steps td {
+          width: 33%;
+          padding: 1em 15px;
+          border-left: 1px dotted #ccc;
+        }
+        #manifest table#steps td:first-child {
+          border-left: 0 none;
+        }
+        #manifest table#steps td p {
+          color: #777;
+        }
+        #manifest #steps .step-1-howto {
+          width: 100%;
+        }
+        #manifest #steps .step-1-howto td {
+          vertical-align: middle;
+          padding: 0;
+          border-left: 0 none;
+        }
+
+        #manifest #steps .step-1-howto .arrow {
+          color: #AAAAAA;
+          padding: 0 10px;
+          text-align: center;
+          text-shadow: 1px 1px 0 #FFFFFF;
+          width: 100%;
+        }
+
+        #manifest #steps .step-1-howto button strong {
+          font-size: 1.3em;
+          font-weight: bold;
+        }
+        #manifest #steps .step-1-howto button span {
+          color: #DEE0EB;
+          font-weight: normal;
+        }
+
+        #manifest #steps code {
+          font-family: Courier;
+          color: #444;
+        }
+
+        #manifest ol.code {
+          list-style: decimal inside none;
+          background-color: #fff;
+          font-family: Courier;
+          font-size: 0.8em;
+          letter-spacing: -0.5px;
+        }
+
+        #manifest ol.code li {
+          border-bottom: 1px solid #ddd;
+          padding: 3px;
+          color: #CCC;
+        }
+
+        #manifest ol.code li span {
+          color: #333;
+        }
+
+        #manifest ol.code li span.comment {
+          color: #a33636;
+          font-weight: bold;
+        }
+
+        #code-samples nav ul li {
+          display: inline-block;
+        }
+
+        #code-samples nav ul {
+          margin: 0;
+        }
+
+        #code-samples nav ul li a {
+          display: block;
+          color: #AAA;
+          text-shadow: 1px 1px 0 #fff;
+          padding: 3px 10px;
+          text-decoration: none;
+        }
+
+        #code-samples nav ul li a:hover {
+          background-color: #eee;
+        }
+
+        #code-samples nav ul li.active a {
+          background-color: #DDD;
+          color: #666;
+        }
+
+        #code-samples nav {
+          border-bottom: 1px solid #999;
+        }
+
+        #code-samples .desc {
+          color: #999999;
+          padding: 1em 8px;
+          text-shadow: 1px 1px #FFFFFF;
+        }
+
+        #manifest .validate {
+          display: table;
+          width: 100%;
+        }
+
+        #manifest .validate div {
+          display: table-cell;
+        }
+
+        #manifest .validate div:first-child,
+        #manifest .validate div input {
+          width: 100%;
+          /* TODO: LESS! */
+          -moz-box-sizing: border-box;
+        }
+        #manifest .validate div:first-child {
+          padding-right: 5px;
+        }
+
+        .next-step {
+          text-align: right;
+          margin-top: 1em;
+          padding-top: 1em;
+          border-top: 1px dotted #ccc;
+        }
+
+        button + .tooltip-right {
+          color: red !important;
+        }
+
+        /* TODO: this should be in JS and not have a width */
+        button .tooltip-right {
+          font-size: 0.8em;
+          font-weight: normal;
+          margin-top: 4px;
+          position: absolute;
+          right: 100%;
+          top: 0;
+          width: 200px;
+          opacity: 0;
+          /* TODO: LESS (for -webkit, etc) */
+          -moz-transition: opacity 0.4s ease-out;
+        }
+
+        button.disabled:hover .tooltip-right {
+          opacity: 1;
+        }
+
+.tooltip-right:after {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: transparent transparent transparent #777777;
+    border-style: solid;
+    border-width: 6px 8px;
+    content: " ";
+    display: block;
+    height: 0;
+    margin-top: -6px;
+    pointer-events: none;
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    width: 0;
+}
+.tooltip-right {
+    background-color: #777777;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    display: inline-block;
+    margin-right: 20px;
+    padding: 8px;
+    position: relative;
+    text-shadow: -1px -1px 0 #444444;
+}
+
+.learn {
+    background-color: #D8E7F5;
+    background-image: url("https://developer.mozilla.org/favicon.ico");
+    background-position: 13px center;
+    background-repeat: no-repeat;
+    border-radius: 5px 5px 5px 5px;
+    color: #447BC4;
+    display: block;
+    margin-top: 1em;
+    padding: 7px 40px;
+}
+
+.learn:hover {
+    background-color: #C5D8EA;
+    text-decoration: none;
+}
+      </style>
+      <table id="steps">
+        <tr>
+          <td><h2>1. Upload Your Manifest</h2>
+            <p>First, download and upzip the file below. Upload the files to your server.
+            While you can upload them anywhere, the following steps assume you don't
+            change the structure or filenames and you upload them to your root directory.</p>
+            <p>So, if your website is <em>example.com</em>, we assume you uploaded the
+            manifest to <em>example.com/manifest.webapp</em>.</p>
+
+            <table class="step-1-howto">
+              <tr>
+                <td><button><strong>Download</strong><br><span>manifest_files.zip</span></button></td>
+                <td class="arrow">
+                  <img src="{{ media('img/hub/arrow.png') }}">
+                  <br>
+                  unzip
+                </td>
+                <td><img src="{{ media('img/hub/directory.png') }}"></td>
+              </tr>
+            </table>
+
+            <a href="https://developer.mozilla.org/en/Apps/Manifest" target="_new" class="learn">
+              <strong>Learn more</strong> about app manifests on MDN.
+            </a>
+          </td>
+          <td>
+            <h2>2. Fix Content-Type</h2>
+            <p>Next, we need to serve the manifest.webapp with a <code>Content-Type</code>
+            of <code>application/x-web-app-manifest+json</code>. Your server may be set
+            up differently, but we've included the steps for common configurations.</p>
+            <p>Follow the instructions below on how to configure your server properly.</p>
+
+            <div id="code-samples">
+              <nav>
+                <ul>
+                  <li class="active"><a href="#">Apache</a></li>
+                  <li class=""><a href="javascript:alert('Soon!');">NGINX</a></li>
+                </ul>
+              </nav>
+              <ol class="code">
+                <li><span class="comment"># Add this to your .htaccess file</span></li>
+                <li><span><strong>AddType</strong> application/x-web-app-manifest+json .webapp</span></li>
+              </ol>
+              <div class="desc">
+                If you don't have a .htaccess file, you should create one in the root directory of your server.
+              </div>
+            </div>
+          </td>
+          <td>
+            <h2>3. Validate your manifest</h2>
+            <p>Once you have everything set up, we need to check to make sure your manifest is valid and everything is set up correctly.</p>
+            <p>Type in the URL to the manifest you uploaded earlier, and we'll validate it.</p>
+            <br>
+            <div class="validate">
+              <div>
+                <input type="text" placeholder="http://example.com/manifest.webapp">
+              </div>
+              <div>
+                <button class="button disabled">Validate</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="next-step">
+      <button class="button prominent disabled">
+        Continue
+        <div class="tooltip-right">You must <em>validate</em> your app first</div>
+      </button>
+    </div>
+  </section>
+{% endblock %}

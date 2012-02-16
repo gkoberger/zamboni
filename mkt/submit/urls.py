@@ -22,5 +22,6 @@ urlpatterns = decorate(write, patterns('',
     url('^app/submit/$', views.submit, name='submit'),
     url('^app/submit/terms$', views.terms, name='submit.terms'),
     url('^app/submit/describe$', views.describe, name='submit.describe'),
+    url('^app/submit/manifest$', views.manifest, name='submit.manifest'),
 #    url('^app/%s/submit/' % APP_SLUG, include(submit_apps_patterns)),
 ))

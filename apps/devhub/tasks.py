@@ -9,6 +9,7 @@ import sys
 import traceback
 import urllib2
 import uuid
+from zipfile import ZipFile
 
 from django.conf import settings
 from django.core.files.storage import default_storage as storage
@@ -384,6 +385,24 @@ def fetch_icon(webapp, **kw):
                                              size_error_message)
 
     save_icon(webapp, content)
+
+
+@task
+def create_manifest(content):
+    tmp_dst = os.path.join(settings.TMP_PATH, 'manifest', uuid.uuid4().hex)
+    tmp_man = os.path.join(tmp_dst, 'manifest.webapp')
+    tmp_zip = os.path.join(settings.TMP_PATH, 'manifest', 'test.zip')
+
+    if not os.path.exists(tmp_dst):
+        os.makedirs(tmp_dst)
+
+    with storage.open(tmp_man, 'wb') as fd:
+        fd.write(json.dumps(content))
+
+    # Should be a `with`, but I was getting an error.
+    man_zip = ZipFile(tmp_zip, 'w')
+    man_zip.write(tmp_man, 'manifest.webapp')
+    man_zip.close()
 
 
 @task

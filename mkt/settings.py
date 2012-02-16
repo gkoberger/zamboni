@@ -72,6 +72,7 @@ MINIFY_BUNDLES['css'].update({
         'css/hub/forms.less',
         'css/submit/flow.less',
         'css/submit/terms.less',
+        'css/impala/buttons.less',
     ),
     'marketplace-experiments': (
         'marketplace-experiments/css/reset.less',

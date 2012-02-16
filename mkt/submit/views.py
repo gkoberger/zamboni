@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 import jingo
 
 from amo.decorators import login_required
+from devhub import tasks
 from users.models import UserProfile
 from . import forms
 
@@ -36,7 +37,18 @@ def terms(request):
 
 
 def describe(request):
+    if request.POST:
+        new_manifest = {'name': request.POST['name'],
+                        'description': request.POST['description']}
+
+        tasks.create_manifest(new_manifest)
+
+        return redirect('submit.manifest')
     return jingo.render(request, 'submit/describe.html')
+
+
+def manifest(request):
+    return jingo.render(request, 'submit/manifest.html')
 
 
 def media(request):

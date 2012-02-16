@@ -14,6 +14,7 @@
     <div id="describe">
       <h1>Describe Your App</h1>
       <form class="c" method="post">
+        {{ csrf() }}
         <h2>Name</h2>
         <p><label><input type="text" name="name" class="large"></label></p>
         <h2>Description</h2>
